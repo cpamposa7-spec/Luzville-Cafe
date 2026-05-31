@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -405,4 +406,413 @@ loadSales();
 </script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Report</title>
+
+<link rel="stylesheet" href="dashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* UPDATED: 4 cards now */
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.card {
+  background: rgba(255,255,255,0.06);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.chart-container {
+  margin-top: 25px;
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+  /* ================= RESPONSIVE FIXES ================= */
+
+*{
+box-sizing:border-box;
+}
+
+html,
+body{
+width:100%;
+overflow-x:hidden;
+}
+
+/* APP */
+.app{
+display:flex;
+min-height:100vh;
+}
+
+/* MAIN */
+.main{
+flex:1;
+width:100%;
+overflow-x:hidden;
+padding:20px;
+}
+
+/* TOPBAR */
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+flex-wrap:wrap;
+}
+
+/* CARDS */
+.cards{
+width:100%;
+}
+
+.card{
+width:100%;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.card p{
+word-break:break-word;
+}
+
+/* CHART */
+.chart-container{
+width:100%;
+overflow-x:auto;
+}
+
+.chart-container canvas{
+width:100% !important;
+max-width:100%;
+height:auto !important;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 992px){
+
+.cards{
+grid-template-columns:repeat(2, 1fr);
+}
+
+.sidebar{
+width:220px;
+min-width:220px;
+}
+
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px){
+
+body{
+overflow-x:hidden;
+}
+
+.app{
+flex-direction:column;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:100%;
+height:auto;
+position:relative;
+padding-bottom:10px;
+}
+
+.sidebar h2{
+text-align:center;
+margin-bottom:15px;
+}
+
+.sidebar nav{
+display:flex;
+gap:10px;
+overflow-x:auto;
+padding:0 10px 10px;
+}
+
+.sidebar nav a{
+white-space:nowrap;
+flex-shrink:0;
+}
+
+/* MAIN */
+.main{
+padding:16px;
+}
+
+/* TOPBAR */
+.topbar{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.topbar h1{
+font-size:22px;
+}
+
+.topbar p{
+font-size:14px;
+}
+
+/* CARDS */
+.cards{
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.card{
+padding:16px;
+}
+
+.card h3{
+font-size:15px;
+}
+
+.card p{
+font-size:18px;
+}
+
+/* CHART */
+.chart-container{
+margin-top:20px;
+padding:14px;
+border-radius:14px;
+}
+
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 480px){
+
+.main{
+padding:12px;
+}
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.topbar h1{
+font-size:20px;
+}
+
+.card{
+padding:14px;
+}
+
+.card h3{
+font-size:14px;
+}
+
+.card p{
+font-size:17px;
+}
+
+.chart-container{
+padding:12px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+  <h2>☕ Luzville POS</h2>
+  <nav>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="order.html">📦 Orders</a>
+    <a class="active" href="sales.html">💰 Sales</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+  <h1>Sales Report</h1>
+  <p>Weekly and Monthly Performance</p>
+</header>
+
+<!-- SALES CARDS -->
+<div class="cards">
+
+  <!-- NEW: Daily Sales -->
+  <div class="card">
+    <h3>Daily Sales</h3>
+    <p id="daily">₱0</p>
+  </div>
+
+  <div class="card">
+    <h3>Weekly Sales</h3>
+    <p id="weekly">₱0</p>
+  </div>
+
+  <div class="card">
+    <h3>Monthly Sales</h3>
+    <p id="monthly">₱0</p>
+  </div>
+
+  <div class="card">
+    <h3>Total Sales</h3>
+    <p id="totalSales">₱0</p>
+  </div>
+
+</div>
+
+<!-- GRAPH -->
+<div class="chart-container">
+  <canvas id="salesChart"></canvas>
+</div>
+
+</main>
+</div>
+
+<script>
+
+const API = "http://localhost:3000";
+
+let chart;
+
+async function loadSales() {
+  try {
+
+    const res = await fetch(`${API}/orders`);
+    const orders = await res.json();
+
+    let now = new Date();
+
+    let daily = 0;
+    let weekly = 0;
+    let monthly = 0;
+    let total = 0;
+
+    let dailySales = {};
+
+    for (let o of orders) {
+
+      if (
+        o.payment_status &&
+        o.payment_status.toLowerCase() !== "paid"
+      ) continue;
+
+      let amount = Number(o.total || 0);
+      total += amount;
+
+      let date = new Date(
+        o.created_at ||
+        o.date ||
+        o.order_date
+      );
+
+      if (isNaN(date)) continue;
+
+      let diff = (now - date) / (1000 * 60 * 60 * 24);
+
+      // DAILY (today only)
+      let isToday =
+        date.toDateString() === now.toDateString();
+
+      if (isToday) daily += amount;
+
+      if (diff <= 7) weekly += amount;
+      if (diff <= 30) monthly += amount;
+
+      let day = date.toLocaleDateString();
+
+      if (!dailySales[day]) dailySales[day] = 0;
+      dailySales[day] += amount;
+    }
+
+    // UI UPDATE
+    document.getElementById("daily").innerText = "₱" + daily.toFixed(2);
+    document.getElementById("weekly").innerText = "₱" + weekly.toFixed(2);
+    document.getElementById("monthly").innerText = "₱" + monthly.toFixed(2);
+    document.getElementById("totalSales").innerText = "₱" + total.toFixed(2);
+
+    // GRAPH DATA
+    const labels = Object.keys(dailySales);
+    const data = Object.values(dailySales);
+
+    const ctx = document.getElementById("salesChart").getContext("2d");
+
+    if (chart) chart.destroy();
+
+    chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Daily Sales (Paid Orders)",
+          data: data,
+          borderWidth: 3,
+          fill: true,
+          tension: 0.4, // smoother curve
+          pointRadius: 3,
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          tooltip: {
+            enabled: true
+          },
+          legend: {
+            display: true
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false
+            }
+          },
+          y: {
+            grid: {
+              color: "rgba(255,255,255,0.1)"
+            }
+          }
+        }
+      }
+    });
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to load sales data");
+  }
+}
+
+loadSales();
+
+</script>
+
+</body>
+>>>>>>> 24693c4f2bc12e595c348b702f2abd3d5b381480
 </html>

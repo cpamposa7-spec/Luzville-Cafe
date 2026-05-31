@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -513,4 +514,521 @@ document.addEventListener('keydown', e => {
 </script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luzville Café — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --roast:    #1c1008;
+  --espresso: #251409;
+  --bark:     #3a1f0d;
+  --caramel:  #b8712a;
+  --latte:    #d4a96a;
+  --border:   rgba(255,255,255,0.09);
+  --surface:  rgba(255,255,255,0.05);
+  --white:    #ffffff;
+  --muted:    rgba(255,255,255,0.4);
+  --danger:   #e05c5c;
+  --success:  #4caf7d;
+  --radius:   12px;
+  --radius-lg:18px;
+  --tr: all 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--roast);
+  color: var(--white);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+/* ===== LEFT VISUAL PANEL ===== */
+.visual {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.visual img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  animation: zoomIn 1.4s ease both;
+}
+
+.visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(28,16,8,0.78) 0%, rgba(58,31,13,0.5) 50%, rgba(184,113,42,0.15) 100%);
+}
+
+.visual-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 40px;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.brand-icon {
+  width: 36px; height: 36px;
+  background: var(--caramel);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--white);
+}
+.brand-sub {
+  font-size: 0.6rem;
+  color: var(--latte);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.visual-quote {
+  animation: fadeUp 0.9s 0.5s both;
+}
+.visual-quote blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+.visual-quote cite {
+  font-size: 0.72rem;
+  color: var(--latte);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-style: normal;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.visual-quote cite::before { content: ''; width: 24px; height: 1px; background: var(--caramel); display: block; }
+
+/* ===== RIGHT FORM PANEL ===== */
+.form-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 40px;
+  background: var(--espresso);
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 400px;
+  animation: fadeUp 0.7s 0.1s both;
+}
+
+/* tabs */
+.tabs {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+.tab {
+  flex: 1;
+  padding: 9px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: var(--tr);
+  border: none;
+  background: none;
+  font-family: 'Poppins', sans-serif;
+}
+.tab.active {
+  background: var(--caramel);
+  color: var(--white);
+}
+
+/* form heading */
+.form-heading {
+  margin-bottom: 22px;
+}
+.form-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.form-sub {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* field */
+.field { margin-bottom: 12px; }
+.field label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap svg {
+  position: absolute;
+  left: 12px;
+  color: var(--muted);
+  width: 15px; height: 15px;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+.input-wrap input {
+  width: 100%;
+  padding: 11px 12px 11px 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.83rem;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.input-wrap input:focus {
+  border-color: rgba(184,113,42,0.6);
+  background: rgba(255,255,255,0.07);
+}
+.input-wrap input::placeholder { color: rgba(255,255,255,0.22); }
+
+/* row */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0;
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* submit */
+.submit-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--caramel);
+  border: none;
+  border-radius: var(--radius);
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: var(--tr);
+  margin-top: 4px;
+}
+.submit-btn:hover { background: var(--latte); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(184,113,42,0.35); }
+.submit-btn:active { transform: none; }
+
+/* error / success msg */
+.msg {
+  display: none;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-size: 0.78rem;
+  margin-top: 12px;
+  align-items: center;
+  gap: 8px;
+}
+.msg.error { background: rgba(224,92,92,0.1); border: 1px solid rgba(224,92,92,0.3); color: #f08080; display: flex; }
+.msg.success { background: rgba(76,175,125,0.1); border: 1px solid rgba(76,175,125,0.3); color: #6fcf97; display: flex; }
+
+/* back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-decoration: none;
+  margin-top: 20px;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--white); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes zoomIn { from { transform:scale(1.05); } to { transform:scale(1); } }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 800px) {
+  body { grid-template-columns: 1fr; overflow: auto; }
+  .visual { min-height: 220px; height: 220px; }
+  .visual-quote { display: none; }
+  .form-panel { min-height: auto; padding: 36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LEFT PANEL -->
+<div class="visual">
+  <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1200&q=80" alt="Luzville Café">
+  <div class="visual-overlay"></div>
+  <div class="visual-content">
+    <a href="index.html" class="brand-mark">
+      <div class="brand-icon">☕</div>
+      <div class="brand-text">
+        <span class="brand-name">Luzville Café</span>
+        <span class="brand-sub">Iloilo's Cozy Corner</span>
+      </div>
+    </a>
+    <div class="visual-quote">
+      <blockquote>"Every great day starts with a great cup."</blockquote>
+      <cite>Luzville Café</cite>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="form-panel">
+  <div class="form-card">
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" id="tabLogin" onclick="showForm('login')">Sign In</button>
+      <button class="tab" id="tabReg" onclick="showForm('register')">Create Account</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginSection">
+      <div class="form-heading">
+        <div class="form-title">Welcome back</div>
+        <div class="form-sub">Sign in to place your order</div>
+      </div>
+
+      <div class="field">
+        <label>Username</label>
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input type="text" id="loginUser" placeholder="Enter your username">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" id="loginPass" placeholder="Enter your password">
+        </div>
+      </div>
+
+      <div id="loginMsg" class="msg"></div>
+
+      <button class="submit-btn" onclick="login()">Sign In</button>
+
+      <div class="divider">or</div>
+
+      <div style="text-align:center; font-size:0.78rem; color:var(--muted);">
+        New here?
+        <span style="color:var(--latte); cursor:pointer; font-weight:500;" onclick="showForm('register')">Create a free account →</span>
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerSection" style="display:none;">
+      <div class="form-heading">
+        <div class="form-title">Create account</div>
+        <div class="form-sub">Join us and start ordering</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Full Name</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" id="fullName" placeholder="Full name">
+          </div>
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 3.09 4.18 2 2 0 0 1 5.05 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <input type="text" id="phone" placeholder="09XX-XXX-XXXX">
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <input type="email" id="email" placeholder="your@email.com">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Username</label>
+        <div class="input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <input type="text" id="regUser" placeholder="Choose a username">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Password</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="regPass" placeholder="Password">
+          </div>
+        </div>
+        <div class="field">
+          <label>Confirm</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            <input type="password" id="regConfirm" placeholder="Repeat">
+          </div>
+        </div>
+      </div>
+
+      <div id="regMsg" class="msg"></div>
+
+      <button class="submit-btn" onclick="register()">Create Account</button>
+
+      <div class="divider">or</div>
+
+      <div style="text-align:center; font-size:0.78rem; color:var(--muted);">
+        Already have an account?
+        <span style="color:var(--latte); cursor:pointer; font-weight:500;" onclick="showForm('login')">Sign in →</span>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back to website
+    </a>
+
+  </div>
+</div>
+
+<script>
+let users = JSON.parse(localStorage.getItem('users')) || [];
+
+function showForm(form) {
+  const isLogin = form === 'login';
+  document.getElementById('loginSection').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('registerSection').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('tabLogin').className = 'tab' + (isLogin ? ' active' : '');
+  document.getElementById('tabReg').className = 'tab' + (!isLogin ? ' active' : '');
+  clearMsgs();
+}
+
+function clearMsgs() {
+  ['loginMsg','regMsg'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className = 'msg';
+    el.textContent = '';
+  });
+}
+
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'msg ' + type;
+}
+
+function val(id) { return document.getElementById(id).value.trim(); }
+
+/* LOGIN */
+function login() {
+  const username = val('loginUser');
+  const password = val('loginPass');
+  if (!username || !password) { showMsg('loginMsg', 'Please fill in all fields.', 'error'); return; }
+
+  const user = users.find(u => u.username === username && u.password === password);
+  if (!user) { showMsg('loginMsg', 'Incorrect username or password.', 'error'); return; }
+
+  showMsg('loginMsg', 'Signed in! Redirecting…', 'success');
+  localStorage.setItem('user', JSON.stringify(user));
+  setTimeout(() => window.location.href = 'costumer.html', 900);
+}
+
+/* REGISTER */
+function register() {
+  const data = {
+    fullName: val('fullName'),
+    email: val('email'),
+    phone: val('phone'),
+    username: val('regUser'),
+    password: val('regPass'),
+    confirm: val('regConfirm')
+  };
+
+  if (Object.values(data).some(v => !v)) { showMsg('regMsg', 'Please fill in all fields.', 'error'); return; }
+  if (data.password !== data.confirm) { showMsg('regMsg', 'Passwords do not match.', 'error'); return; }
+  if (users.find(u => u.username === data.username)) { showMsg('regMsg', 'Username already taken.', 'error'); return; }
+
+  const { confirm, ...userObj } = data;
+  users.push(userObj);
+  localStorage.setItem('users', JSON.stringify(users));
+
+  showMsg('regMsg', 'Account created! Switching to sign in…', 'success');
+  setTimeout(() => showForm('login'), 1200);
+}
+
+/* Enter key support */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('loginSection').style.display !== 'none') login();
+  else register();
+});
+</script>
+
+</body>
+>>>>>>> 24693c4f2bc12e595c348b702f2abd3d5b381480
 </html>

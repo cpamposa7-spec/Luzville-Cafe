@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,4 +124,131 @@ loadUsers();
 </script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Users</title>
+
+<link rel="stylesheet" href="admin.css">
+
+<style>
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 5px 0;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  color: white;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div>
+      <div class="brand">☕ Luzville Café</div>
+
+      <nav>
+        <a href="admin.html">🏠 Dashboard</a>
+        <a class="active" href="users.html">👥 Users</a>
+        <a href="orders.html">📦 Orders</a>
+        <a href="adminmenu.html">🍽 Menu</a>
+        <a href="analytics.html">📊 Analytics</a>
+      </nav>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <h1>Users Management</h1>
+        <p>Manage admin and staff accounts</p>
+      </div>
+
+      <div class="status">
+        <span class="dot"></span>
+        Live Users
+      </div>
+    </div>
+
+    <div class="card animate">
+      <h2>👥 User Accounts</h2>
+      <div id="userList">Loading users...</div>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- SOCKET.IO -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script>
+
+const API = "http://localhost:3000";
+const socket = io(API);
+
+// ================= LOAD USERS =================
+async function loadUsers() {
+  try {
+    const res = await fetch(`${API}/users`);
+    const users = await res.json();
+
+    let html = "";
+
+    users.forEach(u => {
+      html += `
+        <div class="item">
+          <span>${u.username} (${u.role})</span>
+
+          <span 
+            id="user-${u.id}"
+            style="color:${u.status === 'online' ? 'lime' : 'red'}; font-weight:bold;"
+          >
+            ${u.status}
+          </span>
+        </div>
+      `;
+    });
+
+    document.getElementById("userList").innerHTML =
+      html || "<p>No users found</p>";
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("userList").innerHTML =
+      "<p style='color:red'>Failed to load users</p>";
+  }
+}
+
+// ================= REAL-TIME UPDATE (FIXED EVENT NAME) =================
+socket.on("status-update", (data) => {
+  const el = document.getElementById(`user-${data.userId}`);
+
+  if (el) {
+    el.innerText = data.status;
+    el.style.color = data.status === "online" ? "lime" : "red";
+  }
+});
+
+// backup refresh
+setInterval(loadUsers, 10000);
+
+// initial load
+loadUsers();
+
+</script>
+
+</body>
+>>>>>>> 24693c4f2bc12e595c348b702f2abd3d5b381480
 </html>

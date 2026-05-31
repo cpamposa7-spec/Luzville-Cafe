@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -431,4 +432,439 @@ loadMenu();
 </script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Menu Management</title>
+
+<link rel="stylesheet" href="admin.css">
+
+<style>
+/* ================= GLOBAL FIX ================= */
+
+html, body {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto; /* IMPORTANT: allows scrolling */
+  margin: 0;
+  padding: 0;
+}
+
+/* ================= LAYOUT ================= */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  height: auto;
+  overflow: visible;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  height: 100vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+}
+
+/* ================= MAIN CONTENT ================= */
+
+.main {
+  flex: 1;
+  min-height: 100vh;
+  height: auto;
+  overflow-y: auto;
+  padding-bottom: 60px; /* IMPORTANT: prevents cut-off content */
+}
+
+/* ================= MOBILE FIX ================= */
+
+@media (max-width: 768px) {
+
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .main {
+    min-height: auto;
+    height: auto;
+    overflow: visible;
+  }
+}
+
+  /* ================= RESPONSIVE FIXES ================= */
+
+*{
+box-sizing:border-box;
+}
+
+html, body{
+width:100%;
+}
+
+/* IMPORTANT: allow scrolling on mobile */
+@media (max-width: 768px){
+html, body{
+overflow:auto;
+height:auto;
+}
+}
+
+/* MAIN LAYOUT */
+.layout{
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR FIX */
+.sidebar{
+overflow-y:auto;
+}
+
+/* MAIN FIX */
+.main{
+overflow-y:auto;
+min-height:100vh;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 992px){
+
+.sidebar{
+width:220px;
+}
+
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px){
+
+.layout{
+flex-direction:column;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:100%;
+height:auto;
+position:relative;
+overflow:visible;
+padding-bottom:10px;
+}
+
+.brand{
+text-align:center;
+padding:10px 0;
+}
+
+.sidebar nav{
+display:flex;
+gap:10px;
+overflow-x:auto;
+padding:0 10px 10px;
+}
+
+.sidebar nav a{
+white-space:nowrap;
+flex-shrink:0;
+}
+
+/* MAIN */
+.main{
+height:auto;
+padding:14px;
+}
+
+/* TOPBAR */
+.topbar{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+}
+
+.topbar h1{
+font-size:20px;
+}
+
+/* CARD */
+.card{
+padding:14px;
+}
+
+/* FORM */
+.form{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.form input{
+width:100%;
+}
+
+.form button{
+width:100%;
+}
+
+/* MENU ITEMS */
+.item{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+}
+
+.item-actions{
+width:100%;
+display:flex;
+gap:10px;
+}
+
+.item-actions button{
+flex:1;
+}
+
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 480px){
+
+.main{
+padding:12px;
+}
+
+.topbar h1{
+font-size:18px;
+}
+
+.card{
+padding:12px;
+}
+
+.form input{
+font-size:14px;
+}
+
+.item-actions{
+flex-direction:column;
+}
+
+.item-actions button{
+width:100%;
+}
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div>
+
+      <div class="brand">☕ Luzville Café</div>
+
+      <nav>
+        <a href="admin.html">🏠 Dashboard</a>
+        <a href="users.html">👥 Users</a>
+        <a href="orders.html">📦 Orders</a>
+        <a class="active" href="adminmenu.html">🍽 Menu</a>
+        <a href="analytics.html">📊 Analytics</a>
+      </nav>
+
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <h1>Menu Management</h1>
+        <p>Add, edit, and manage café items</p>
+      </div>
+
+      <div class="status">
+        <span class="dot"></span>
+        Menu System
+      </div>
+    </div>
+
+    <div class="card animate">
+
+      <h2>🍽 Add New Item</h2>
+
+      <div class="form">
+        <input type="text" id="itemName" placeholder="Item name">
+        <input type="number" id="itemPrice" placeholder="Price">
+
+        <button onclick="addMenuItem()">Add Item</button>
+      </div>
+
+      <div id="menuList">Loading menu...</div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+
+const API = "http://localhost:3000";
+
+
+// ================= LOAD MENU =================
+async function loadMenu() {
+  try {
+    const res = await fetch(`${API}/menu`);
+    const menu = await res.json();
+
+    let html = "";
+
+    menu.forEach(item => {
+      html += `
+        <div class="item">
+
+          <div>
+            <strong>${item.name}</strong><br>
+            <small>₱${Number(item.price).toFixed(2)}</small>
+          </div>
+
+          <div class="item-actions">
+
+            <button class="edit-btn"
+              onclick="editMenu(${item.id}, '${item.name}', ${item.price})">
+              Edit
+            </button>
+
+            <button class="delete-btn"
+              onclick="deleteMenu(${item.id})">
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+    });
+
+    document.getElementById("menuList").innerHTML =
+      menu.length ? html : "<p>No menu items found</p>";
+
+  } catch (err) {
+    console.error("LOAD ERROR:", err);
+  }
+}
+
+
+// ================= ADD ITEM (FIXED & SAFE) =================
+async function addMenuItem() {
+
+  const name = document.getElementById("itemName").value.trim();
+  const price = document.getElementById("itemPrice").value;
+
+  if (!name || !price) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/menu`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: name,
+        price: Number(price)
+      })
+    });
+
+    const data = await res.json();
+
+    console.log("ADD RESPONSE:", data);
+
+    if (!res.ok || !data.success) {
+      alert(data.error || "Failed to add item");
+      return;
+    }
+
+    document.getElementById("itemName").value = "";
+    document.getElementById("itemPrice").value = "";
+
+    loadMenu();
+
+  } catch (err) {
+    console.error("ADD ERROR:", err);
+    alert("Cannot connect to server. Make sure backend is running.");
+  }
+}
+
+
+// ================= EDIT ITEM =================
+async function editMenu(id, oldName, oldPrice) {
+
+  const name = prompt("New name:", oldName);
+  if (!name) return;
+
+  const price = prompt("New price:", oldPrice);
+  if (!price) return;
+
+  await fetch(`${API}/menu/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, price })
+  });
+
+  loadMenu();
+}
+
+
+// ================= DELETE ITEM =================
+async function deleteMenu(id) {
+
+  const confirmDelete = confirm("Delete this item?");
+  if (!confirmDelete) return;
+
+  await fetch(`${API}/menu/${id}`, {
+    method: "DELETE"
+  });
+
+  loadMenu();
+}
+
+
+// INITIAL LOAD
+loadMenu();
+
+</script>
+
+</body>
+>>>>>>> 24693c4f2bc12e595c348b702f2abd3d5b381480
 </html>

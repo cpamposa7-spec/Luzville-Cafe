@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -719,4 +720,727 @@ footer { background: var(--roast); color: rgba(255,255,255,0.65); padding: 0 6%;
   });
 </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luzville Café — Contact</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===== ROOT / TOKENS ===== */
+:root {
+  --roast:      #1c1008;
+  --espresso:   #2e1b0e;
+  --caramel:    #b8712a;
+  --latte:      #d4a96a;
+  --cream:      #faf5ec;
+  --fog:        #f3ede4;
+  --white:      #ffffff;
+  --muted:      #8a7160;
+  --radius:     12px;
+  --radius-lg:  20px;
+  --shadow-sm:  0 2px 8px rgba(28,16,8,0.07);
+  --shadow-md:  0 8px 24px rgba(28,16,8,0.12);
+  --shadow-lg:  0 24px 64px rgba(28,16,8,0.18);
+  --transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Poppins', sans-serif; background: var(--cream); color: var(--roast); overflow-x: hidden; }
+
+/* ===== HEADER ===== */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 5%; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, box-shadow 0.4s;
+  background: rgba(28,16,8,0.95);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+header.scrolled {
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+.logo-icon { width: 34px; height: 34px; background: var(--caramel); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+.logo-text { display: flex; flex-direction: column; line-height: 1; }
+.logo-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: var(--white); letter-spacing: 0.01em; }
+.logo-tagline { font-size: 0.58rem; color: var(--latte); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; }
+
+nav { display: flex; align-items: center; gap: 4px; }
+nav a { font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; letter-spacing: 0.04em; padding: 8px 14px; border-radius: 8px; transition: var(--transition); position: relative; }
+nav a:hover { color: var(--white); background: rgba(255,255,255,0.07); }
+nav a.active { color: var(--latte); }
+nav a.active::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--caramel); }
+
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.header-login { font-size: 0.78rem; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: var(--transition); letter-spacing: 0.03em; }
+.header-login:hover { color: var(--white); background: rgba(255,255,255,0.07); }
+.header-cta { display: inline-flex; align-items: center; gap: 7px; background: var(--caramel); color: var(--white); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; padding: 10px 20px; border-radius: 99px; transition: var(--transition); white-space: nowrap; }
+.header-cta:hover { background: var(--latte); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,113,42,0.4); }
+.header-cta svg { flex-shrink: 0; }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; border: none; background: none; }
+.hamburger span { width: 22px; height: 2px; background: rgba(255,255,255,0.8); border-radius: 2px; display: block; transition: var(--transition); }
+
+/* Hamburger animated state */
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  position: fixed; top: 64px; left: 0; right: 0;
+  background: rgba(28,16,8,0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 16px 5% 28px;
+  z-index: 99;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  flex-direction: column;
+  gap: 2px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  font-size: 0.95rem; font-weight: 500; color: rgba(255,255,255,0.7);
+  text-decoration: none; padding: 13px 4px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: var(--transition); letter-spacing: 0.02em;
+}
+.mobile-nav a:hover, .mobile-nav a.active { color: var(--latte); padding-left: 8px; }
+.mobile-nav .mobile-cta {
+  margin-top: 16px; background: var(--caramel); color: var(--white);
+  text-align: center; padding: 14px; border-radius: 99px;
+  font-weight: 600; font-size: 0.88rem; letter-spacing: 0.05em; text-transform: uppercase;
+  border-bottom: none;
+}
+.mobile-nav .mobile-cta:hover { background: var(--latte); padding-left: 4px; }
+
+/* ===== CONTACT HERO ===== */
+.contact-hero {
+  min-height: 46vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 6% 72px;
+  background:
+    linear-gradient(rgba(28,16,8,0.62), rgba(28,16,8,0.62)),
+    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+.contact-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.contact-hero-inner {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.15s forwards;
+  max-width: 600px;
+  width: 100%;
+}
+
+.contact-hero-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--latte);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.contact-hero-eyebrow::before,
+.contact-hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--caramel); display: block; }
+
+.contact-hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+.contact-hero h1 em { font-style: italic; color: var(--latte); }
+
+.contact-hero p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.62);
+  font-weight: 300;
+}
+
+/* ===== CONTACT SECTION ===== */
+.contact-section {
+  padding: 64px 6%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  background: var(--white);
+}
+
+.contact-card,
+.contact-form-wrap {
+  background: var(--cream);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  border: 1px solid rgba(184,113,42,0.1);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+.contact-card:hover,
+.contact-form-wrap:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(184,113,42,0.2);
+}
+
+.contact-card .card-label,
+.contact-form-wrap .card-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--caramel);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.contact-card h2,
+.contact-form-wrap h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.4rem, 4vw, 1.7rem);
+  font-weight: 600;
+  color: var(--roast);
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(184,113,42,0.1);
+}
+.info-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.info-icon {
+  width: 36px; height: 36px;
+  background: var(--fog);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.info-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.info-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.info-value { font-size: 0.86rem; color: var(--roast); font-weight: 500; line-height: 1.5; word-break: break-word; }
+.info-value a { color: var(--caramel); text-decoration: none; transition: var(--transition); }
+.info-value a:hover { color: var(--roast); }
+
+/* ===== FORM ===== */
+.contact-form-wrap input,
+.contact-form-wrap textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid rgba(184,113,42,0.15);
+  background: var(--white);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  color: var(--roast);
+  transition: border-color 0.2s;
+  /* Fix iOS zoom on focus */
+  font-size: max(16px, 0.85rem);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.contact-form-wrap input::placeholder,
+.contact-form-wrap textarea::placeholder { color: var(--muted); font-weight: 300; }
+.contact-form-wrap input:focus,
+.contact-form-wrap textarea:focus { border-color: var(--caramel); }
+
+.contact-form-wrap textarea { resize: vertical; min-height: 120px; }
+
+.contact-form-wrap button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 99px;
+  background: var(--caramel);
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition);
+  /* Ensure tap target is at least 44px */
+  min-height: 48px;
+  touch-action: manipulation;
+}
+.contact-form-wrap button:hover {
+  background: var(--latte);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(184,113,42,0.35);
+}
+.contact-form-wrap button:active { transform: translateY(0); }
+
+/* ===== MAP SECTION ===== */
+.map-section {
+  padding: 0 6% 72px;
+  background: var(--white);
+}
+
+.map-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--caramel);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.map-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.3rem, 3vw, 1.5rem);
+  font-weight: 600;
+  color: var(--roast);
+  margin-bottom: 18px;
+}
+
+.map-box {
+  height: 320px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(184,113,42,0.1);
+}
+.map-box iframe { width: 100%; height: 100%; border: none; display: block; }
+
+/* ===== FOOTER ===== */
+footer { background: var(--roast); color: rgba(255,255,255,0.65); padding: 0 6%; }
+.footer-top {
+  padding: 56px 0 40px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 14px; }
+.footer-logo-icon { width: 34px; height: 34px; background: var(--caramel); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+.footer-logo-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: var(--white); }
+.footer-brand-desc { font-size: 0.81rem; line-height: 1.75; color: rgba(255,255,255,0.45); max-width: 240px; margin-bottom: 20px; }
+.footer-socials { display: flex; gap: 8px; }
+.social-btn { width: 36px; height: 36px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.82rem; color: rgba(255,255,255,0.6); transition: var(--transition); }
+.social-btn:hover { background: var(--caramel); border-color: var(--caramel); color: var(--white); transform: translateY(-2px); }
+.footer-col-title { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--latte); margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 0.81rem; color: rgba(255,255,255,0.48); text-decoration: none; padding: 5px 0; transition: var(--transition); }
+.footer-col a:hover { color: var(--white); padding-left: 4px; }
+.footer-hours-item { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 5px 0; color: rgba(255,255,255,0.45); border-bottom: 1px solid rgba(255,255,255,0.05); gap: 8px; }
+.footer-hours-item:last-child { border-bottom: none; }
+.footer-hours-item span:last-child { color: rgba(255,255,255,0.7); white-space: nowrap; }
+.footer-newsletter {
+  padding: 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-wrap: wrap;
+}
+.footer-newsletter-label { font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--caramel); margin-bottom: 4px; }
+.footer-newsletter-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: var(--white); }
+.footer-newsletter-form { display: flex; gap: 0; flex-shrink: 0; }
+.footer-newsletter-form input {
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  font-size: 0.82rem;
+  color: var(--white);
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  width: 220px;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.footer-newsletter-form input::placeholder { color: rgba(255,255,255,0.3); }
+.footer-newsletter-form input:focus { border-color: rgba(184,113,42,0.5); }
+.footer-newsletter-form button {
+  padding: 12px 18px;
+  background: var(--caramel);
+  color: var(--white);
+  border: none;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  touch-action: manipulation;
+}
+.footer-newsletter-form button:hover { background: var(--latte); }
+.footer-bottom {
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.footer-copyright { font-size: 0.76rem; color: rgba(255,255,255,0.28); }
+.footer-bottom-links { display: flex; gap: 16px; }
+.footer-bottom-links a { font-size: 0.76rem; color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.2s; }
+.footer-bottom-links a:hover { color: rgba(255,255,255,0.6); }
+.footer-badge { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: rgba(255,255,255,0.22); }
+.footer-badge span { color: var(--caramel); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== RESPONSIVE — TABLET (≤1024px) ===== */
+@media (max-width: 1024px) {
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+/* ===== RESPONSIVE — SMALL TABLET / LARGE MOBILE (≤900px) ===== */
+@media (max-width: 900px) {
+  nav, .header-login { display: none; }
+  .hamburger { display: flex; }
+
+  .contact-section { padding: 52px 5%; gap: 20px; }
+  .map-section { padding: 0 5% 56px; }
+
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .footer-newsletter { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .footer-newsletter-form { width: 100%; }
+  .footer-newsletter-form input { flex: 1; width: auto; min-width: 0; }
+}
+
+/* ===== RESPONSIVE — MOBILE (≤600px) ===== */
+@media (max-width: 600px) {
+  /* Header */
+  header { height: 60px; padding: 0 4%; }
+  .mobile-nav { top: 60px; max-height: calc(100vh - 60px); }
+  .logo-tagline { display: none; } /* Clean up on tiny screens */
+
+  /* Hero */
+  .contact-hero {
+    min-height: 40vh;
+    padding: 100px 5% 56px;
+  }
+  .contact-hero-eyebrow { font-size: 0.65rem; gap: 10px; }
+  .contact-hero-eyebrow::before,
+  .contact-hero-eyebrow::after { width: 18px; }
+
+  /* Contact section — stack to single column */
+  .contact-section {
+    padding: 40px 4%;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .contact-card,
+  .contact-form-wrap {
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+
+  /* Disable hover lift on touch screens */
+  .contact-card:hover,
+  .contact-form-wrap:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .info-icon { width: 34px; height: 34px; font-size: 0.85rem; border-radius: 9px; }
+  .info-row { gap: 12px; margin-bottom: 14px; padding-bottom: 14px; }
+
+  /* Map */
+  .map-section { padding: 0 4% 48px; }
+  .map-box { height: 260px; border-radius: 16px; }
+
+  /* Footer */
+  footer { padding: 0 4%; }
+  .footer-top {
+    padding: 40px 0 32px;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .footer-brand-desc { max-width: 100%; }
+  .footer-newsletter-form { flex-direction: column; gap: 10px; }
+  .footer-newsletter-form input {
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    width: 100%;
+    padding: 13px 16px;
+  }
+  .footer-newsletter-form button {
+    border-radius: 8px;
+    width: 100%;
+    padding: 13px;
+    text-align: center;
+  }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .footer-bottom-links { flex-wrap: wrap; gap: 12px; }
+}
+
+/* ===== RESPONSIVE — VERY SMALL MOBILE (≤380px) ===== */
+@media (max-width: 380px) {
+  .logo-name { font-size: 1rem; }
+  .header-cta { padding: 9px 14px; font-size: 0.72rem; letter-spacing: 0.04em; }
+  .header-cta svg { display: none; }
+
+  .contact-card, .contact-form-wrap { padding: 20px 16px; }
+  .contact-form-wrap input,
+  .contact-form-wrap textarea { padding: 12px 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="mainHeader">
+  <a href="index.html" class="logo">
+    <div class="logo-icon">☕</div>
+    <div class="logo-text">
+      <span class="logo-name">Luzville Café</span>
+      <span class="logo-tagline">Kabankalan's Cozy Corner</span>
+    </div>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" class="active">Contact</a>
+  </nav>
+
+  <div class="header-actions">
+    <a href="login.html" class="header-login">Staff Login</a>
+    <a href="ordernow.html" class="header-cta">
+      Order Now
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile menu">
+  <a href="index.html">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="about.html">About</a>
+  <a href="contact.html" class="active">Contact</a>
+  <a href="login.html">Staff Login</a>
+  <a href="ordernow.html" class="mobile-cta">Order Now</a>
+</div>
+
+<!-- CONTACT HERO -->
+<section class="contact-hero">
+  <div class="contact-hero-inner">
+    <p class="contact-hero-eyebrow">Reach Out</p>
+    <h1>Contact <em>Us</em></h1>
+    <p>We'd love to hear from you ☕</p>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section">
+
+  <div class="contact-card">
+    <span class="card-label">Find Us</span>
+    <h2>Get In Touch</h2>
+
+    <div class="info-row">
+      <div class="info-icon">📍</div>
+      <div class="info-text">
+        <span class="info-label">Address</span>
+        <span class="info-value">Luzville Café, Kabankalan City, Philippines</span>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">📞</div>
+      <div class="info-text">
+        <span class="info-label">Phone</span>
+        <span class="info-value"><a href="tel:+639074725164">0907-472-5164</a></span>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">💬</div>
+      <div class="info-text">
+        <span class="info-label">Facebook</span>
+        <span class="info-value">
+          <a href="https://www.facebook.com/profile.php?id=61573885417923" target="_blank" rel="noopener noreferrer">Luzville Cafe</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🕒</div>
+      <div class="info-text">
+        <span class="info-label">Hours</span>
+        <span class="info-value">Open Daily: 8:00 AM – 10:00 PM</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form-wrap">
+    <span class="card-label">Drop a Note</span>
+    <h2>Send a Message</h2>
+    <input type="text" placeholder="Your Name" autocomplete="name">
+    <input type="email" placeholder="Your Email" autocomplete="email">
+    <textarea rows="5" placeholder="Your Message"></textarea>
+    <button type="button">Send Message</button>
+  </div>
+
+</section>
+
+<!-- MAP SECTION -->
+<section class="map-section">
+  <span class="map-label">Location</span>
+  <p class="map-heading">Find Us in Kabankalan</p>
+  <div class="map-box">
+    <iframe
+      src="https://maps.google.com/maps?q=kabankalan+city+philippines&t=&z=13&ie=UTF8&iwloc=&output=embed"
+      title="Luzville Café Location"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="footer-logo">
+        <div class="footer-logo-icon">☕</div>
+        <span class="footer-logo-name">Luzville Café</span>
+      </a>
+      <p class="footer-brand-desc">Handcrafted drinks and warm bowls in the heart of Kabankalan. Your everyday cozy corner since 2024.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" aria-label="Facebook">f</a>
+        <a href="#" class="social-btn" aria-label="Instagram">ig</a>
+        <a href="#" class="social-btn" aria-label="TikTok">tk</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Quick Links</p>
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Staff Login</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Menu</p>
+      <a href="menu.html">Café Drinks</a>
+      <a href="menu.html">Rice Bowls</a>
+      <a href="menu.html">Soup &amp; Noodles</a>
+      <a href="menu.html">Breakfast</a>
+      <a href="menu.html">Sushi</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Store Hours</p>
+      <div class="footer-hours-item"><span>Mon – Fri</span><span>7AM – 9PM</span></div>
+      <div class="footer-hours-item"><span>Saturday</span><span>7AM – 10PM</span></div>
+      <div class="footer-hours-item"><span>Sunday</span><span>8AM – 8PM</span></div>
+      <div style="margin-top:14px;font-size:0.76rem;color:rgba(255,255,255,0.35);line-height:1.6;">📍 Kabankalan City, Philippines</div>
+    </div>
+  </div>
+
+  <div class="footer-newsletter">
+    <div>
+      <p class="footer-newsletter-label">Stay in the Loop</p>
+      <p class="footer-newsletter-heading">Get promos &amp; new menu alerts</p>
+    </div>
+    <div class="footer-newsletter-form">
+      <input type="email" placeholder="Your email address" autocomplete="email">
+      <button type="button">Subscribe</button>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-copyright">© 2025 Luzville Café. All rights reserved.</p>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+    </div>
+    <div class="footer-badge">Made with <span>♥</span> in Kabankalan</div>
+  </div>
+</footer>
+
+<script>
+  /* ── Header scroll effect ── */
+  const mainHeader = document.getElementById('mainHeader');
+  window.addEventListener('scroll', () => {
+    mainHeader.classList.toggle('scrolled', window.scrollY > 30);
+  }, { passive: true });
+
+  /* ── Hamburger ── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+    /* Prevent body scroll when nav is open */
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  mobileNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ── Close mobile nav on outside tap ── */
+  document.addEventListener('click', (e) => {
+    if (mobileNav.classList.contains('open') &&
+        !mobileNav.contains(e.target) &&
+        !hamburger.contains(e.target)) {
+      mobileNav.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+</body>
+>>>>>>> 24693c4f2bc12e595c348b702f2abd3d5b381480
 </html>
