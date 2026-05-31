@@ -14,6 +14,11 @@ process.on("uncaughtException", (err) => {
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
+app.use(express.json());
+app.use(express.static(__dirname));
+
+// ================= DATABASE =================
+
 // ================= DATABASE =================
 const db = mysql.createPool({
   host: process.env.MYSQLHOST,
