@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Orders</title>
+
+<link rel="stylesheet" href="admin.css">
+
+<style>
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  margin: 6px 0;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  color: white;
+}
+
+small {
+  color: #ccc;
+  font-size: 12px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+
+    <div>
+      <div class="brand">☕ Luzville Café</div>
+
+      <nav>
+        <a href="admin.html">🏠 Dashboard</a>
+        <a href="users.html">👥 Users</a>
+        <a class="active" href="orders.html">📦 Orders</a>
+        <a href="adminmenu.html">🍽 Menu</a>
+        <a href="analytics.html">📊 Analytics</a>
+      </nav>
+    </div>
+
+
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <h1>Orders Management</h1>
+        <p>Track and manage customer orders</p>
+      </div>
+
+      <div class="status">
+        <span class="dot"></span>
+        Live Orders
+      </div>
+    </div>
+
+    <div class="card animate">
+      <h2>📦 Live Orders</h2>
+
+      <div id="orderList">Loading orders...</div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+
+const API = "http://localhost:3000";
+
+// ================= STATUS ICON =================
+function getStatusIcon(status, payment) {
+
+  if (payment === "paid") return "🟢";
+  if (status === "completed") return "🔵";
+  if (status === "pending") return "🟡";
+
+  return "⚪";
+}
+
+// ================= LOAD ORDERS =================
+async function loadOrders() {
+
+  try {
+
+    const res = await fetch(`${API}/orders`);
+    if (!res.ok) throw new Error("Failed to load orders");
+
+    const orders = await res.json();
+
+    let html = "";
+
+    if (!orders || orders.length === 0) {
+      document.getElementById("orderList").innerHTML = "<p>No orders found</p>";
+      return;
+    }
+
+    orders.forEach(o => {
+
+      const icon = getStatusIcon(o.status, o.payment_status);
+
+      const date = o.created_at
+        ? new Date(o.created_at).toLocaleString()
+        : "No date";
+
+      html += `
+        <div class="item">
+
+          <span>
+            Order #${o.id || "?"} <br>
+            <small>${date}</small>
+          </span>
+
+          <span>
+            ${icon} ${o.status || "pending"} / ${o.payment_status || "pending"} <br>
+            ₱${Number(o.total || 0).toFixed(2)}
+          </span>
+
+        </div>
+      `;
+    });
+
+    document.getElementById("orderList").innerHTML = html;
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("orderList").innerHTML =
+      "<p style='color:red'>Failed to load orders</p>";
+  }
+}
+
+// ================= INIT =================
+loadOrders();
+setInterval(loadOrders, 5000);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Luzville Dashboard</title>
+
+<link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+
+    <div>
+      <div class="brand">☕ Luzville Café</div>
+
+      <nav>
+        <a class="active" href="admin.html">🏠 Dashboard</a>
+        <a href="users.html">👥 Users</a>
+        <a href="orders.html">📦 Orders</a>
+        <a href="adminmenu.html">🍽 Menu</a>
+        <a href="analytics.html">📊 Analytics</a>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="login.html" class="back-btn">← Logout </a>
+    </div>
+
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Manage Luzville Café System</p>
+      </div>
+
+      <div class="status">
+        <span class="dot"></span>
+        System Online
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+
+      <div class="stat-card">
+        <h3>Total Sales</h3>
+        <p id="totalSales">₱0</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Total Orders</h3>
+        <p id="totalOrders">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Menu Items</h3>
+        <p id="menuCount">0</p>
+      </div>
+
+    </div>
+
+    <!-- RECENT ORDERS -->
+    <div class="card">
+      <h2>📦 Recent Orders</h2>
+      <div id="recentOrders"></div>
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+
+const API = "http://localhost:3000";
+
+async function safeFetch(url, fallback) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return fallback;
+    return await res.json();
+  } catch (err) {
+    return fallback;
+  }
+}
+
+async function loadDashboard() {
+
+  // ================= SALES (FIXED HERE) =================
+  const sales = await safeFetch(`${API}/dashboard-summary`, {
+    total_sales: 0,
+    total_orders: 0
+  });
+
+  document.getElementById("totalSales").innerText =
+    "₱" + Number(sales.total_sales || 0).toFixed(2);
+
+  document.getElementById("totalOrders").innerText =
+    sales.total_orders || 0;
+
+  // ================= MENU =================
+  const menu = await safeFetch(`${API}/menu`, []);
+
+  document.getElementById("menuCount").innerText =
+    menu.length || 0;
+
+  // ================= ORDERS =================
+  const orders = await safeFetch(`${API}/orders`, []);
+
+  let html = "";
+
+  if (orders.length === 0) {
+    html = "<p>No orders yet</p>";
+  } else {
+    orders.slice(0, 5).forEach(o => {
+      html += `
+        <div class="item">
+          <span>Order #${o.id}</span>
+          <span>${o.payment_status || "pending"}</span>
+        </div>
+      `;
+    });
+  }
+
+  document.getElementById("recentOrders").innerHTML = html;
+}
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>

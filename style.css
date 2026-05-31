@@ -1,0 +1,292 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+/* ===== TOKENS ===== */
+:root {
+  --espresso:   #1c1008;
+  --roast:      #3b1f0a;
+  --caramel:    #b8712a;
+  --latte:      #d4a96a;
+  --cream:      #faf5ec;
+  --fog:        #f0e8d8;
+  --text:       #2a1a0a;
+  --muted:      #7a604a;
+  --white:      #ffffff;
+
+  --shadow-lg:  0 20px 60px rgba(28,16,8,0.2);
+  --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ================= HEADER (UNCHANGED — SAFE HOME PAGE) ================= */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 20px 7%;
+  background: rgba(28, 16, 8, 0.92);
+
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(180, 113, 42, 0.2);
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--latte);
+}
+
+/* NAV */
+nav {
+  display: flex;
+  gap: 32px;
+}
+
+nav a {
+  text-decoration: none;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  position: relative;
+  transition: var(--transition);
+}
+
+nav a:hover {
+  color: #fff;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background: var(--latte);
+  transition: var(--transition);
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+/* BUTTON */
+.login-btn {
+  padding: 10px 22px;
+  border-radius: 99px;
+  background: var(--latte);
+  color: var(--espresso);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.login-btn:hover {
+  background: #fff;
+}
+
+/* ================= AUTH PAGE ================= */
+.auth-page {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  height: 100vh;
+}
+
+/* LEFT */
+.auth-left {
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.05);
+}
+
+/* OVERLAY */
+.auth-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 50px;
+  background: linear-gradient(
+    135deg,
+    rgba(20,10,5,0.88),
+    rgba(70,35,12,0.65),
+    rgba(200,140,70,0.25)
+  );
+}
+
+/* ================= FIXED BRAND (TOP LEFT + CLICKABLE) ================= */
+.brand {
+  position: absolute;
+  top: 20px;
+  left: 25px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  text-decoration: none;
+  z-index: 50;
+}
+
+.brand span {
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 700;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 1px;
+
+  text-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  transition: 0.3s ease;
+}
+
+.brand:hover span {
+  color: var(--latte);
+}
+
+/* HERO TEXT */
+.auth-overlay::after {
+  content: "LUZVILLE";
+  position: absolute;
+  top: 35%;
+  left: 50px;
+  right: 50px;
+
+  font-size: clamp(6.5rem, 10vw, 11rem);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+
+  color: rgba(255,255,255,0.09);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+
+  pointer-events: none;
+
+  animation: floatText 6s ease-in-out infinite;
+}
+
+/* TAGLINE */
+.auth-overlay::before {
+  content: "Crafted coffee. Crafted moments. Your journey begins here.";
+  position: absolute;
+
+  bottom: 95px;
+  left: 50px;
+  right: 50px;
+
+  max-width: 450px;
+
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.7;
+
+  color: rgba(255,255,255,0.92);
+}
+
+/* RIGHT */
+.auth-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--cream);
+  padding: 50px;
+}
+
+.card {
+  width: 100%;
+  max-width: 430px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  background: #f3e7dc;
+  border-radius: 12px;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.tab.active {
+  background: var(--roast);
+  color: #fff;
+}
+
+/* FORM */
+.form { display: none; }
+.form.active { display: block; }
+
+.field input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--roast), var(--caramel));
+  color: white;
+  border: none;
+  font-weight: 600;
+}
+
+/* ANIMATION */
+@keyframes floatText {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .auth-page {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-left {
+    display: none;
+  }
+
+  .auth-right {
+    padding: 20px;
+  }
+}

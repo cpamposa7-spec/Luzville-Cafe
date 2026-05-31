@@ -1,0 +1,654 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luzville POS Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css">
+
+<style>
+.search-box { margin-bottom: 15px; }
+
+.search-box input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06);
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+.no-menu {
+  text-align: center;
+  color: #ccc;
+  padding: 10px;
+}
+
+#cart div { margin: 5px 0; color: #ddd; }
+
+.total-box {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: #ddd;
+  font-size: 14px;
+}
+
+.cart-item:last-child { border-bottom: none; }
+
+.remove-btn {
+  background: rgba(255,80,80,0.15);
+  border: none;
+  color: #ff6b6b;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.remove-btn:hover { background: rgba(255,80,80,0.3); }
+
+.pay-btn {
+  margin-top: 14px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #22c55e;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: background 0.2s;
+}
+
+.pay-btn:hover { background: #16a34a; }
+.pay-btn:disabled { background: #555; cursor: not-allowed; }
+
+.clear-btn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.clear-btn:hover {
+  border-color: rgba(255,80,80,0.4);
+  color: #ff6b6b;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.sidebar nav { flex: 1; }
+
+.logout-btn {
+  margin: 20px;
+  padding: 12px;
+  text-align: center;
+  border-radius: 10px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.empty-cart {
+  text-align: center;
+  color: rgba(255,255,255,0.3);
+  padding: 30px 10px;
+  font-size: 13px;
+}
+
+.success-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  z-index: 999;
+  animation: slideDown 0.3s ease;
+  display: none;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+  /* ================= RESPONSIVE FIXES ================= */
+
+*{
+box-sizing:border-box;
+}
+
+html,body{
+width:100%;
+overflow-x:hidden;
+}
+
+/* APP LAYOUT */
+.app{
+display:flex;
+min-height:100vh;
+}
+
+/* MAIN AREA */
+.main{
+flex:1;
+width:100%;
+overflow-x:hidden;
+}
+
+/* TOPBAR */
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+}
+
+/* POS GRID */
+.pos-grid{
+display:grid;
+grid-template-columns:1fr 380px;
+gap:20px;
+width:100%;
+}
+
+/* MENU GRID */
+.menu-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:16px;
+}
+
+/* MENU CARD */
+.menu-card{
+width:100%;
+}
+
+/* CART */
+.cart-item{
+gap:10px;
+flex-wrap:wrap;
+}
+
+.cart-item span{
+word-break:break-word;
+}
+
+/* TOAST */
+.success-toast{
+max-width:90%;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 992px){
+
+.pos-grid{
+grid-template-columns:1fr;
+}
+
+.panel{
+width:100%;
+}
+
+.sidebar{
+width:220px;
+min-width:220px;
+}
+
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px){
+
+body{
+overflow-x:hidden;
+}
+
+.app{
+flex-direction:column;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:100%;
+height:auto;
+position:relative;
+padding-bottom:10px;
+}
+
+.sidebar h2{
+text-align:center;
+margin-bottom:15px;
+}
+
+.sidebar nav{
+display:flex;
+gap:10px;
+overflow-x:auto;
+padding:0 10px 10px;
+}
+
+.sidebar nav a{
+white-space:nowrap;
+flex-shrink:0;
+}
+
+.logout-btn{
+margin:10px;
+}
+
+/* MAIN */
+.main{
+width:100%;
+padding:12px;
+}
+
+/* TOPBAR */
+.topbar{
+flex-direction:column;
+align-items:flex-start;
+gap:6px;
+}
+
+.topbar h1{
+font-size:22px;
+}
+
+/* PANELS */
+.panel{
+padding:16px;
+border-radius:16px;
+}
+
+/* MENU GRID */
+.menu-grid{
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.menu-card{
+padding:14px;
+}
+
+.menu-card h3{
+font-size:15px;
+}
+
+.menu-card p{
+font-size:14px;
+}
+
+/* QTY */
+.qty{
+gap:8px;
+}
+
+.qty button{
+width:32px;
+height:32px;
+}
+
+/* BUTTONS */
+.pay-btn,
+.clear-btn{
+width:100%;
+}
+
+/* CART */
+.cart-item{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.remove-btn{
+align-self:flex-end;
+}
+
+/* TOAST */
+.success-toast{
+right:10px;
+left:10px;
+top:10px;
+width:auto;
+}
+
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 480px){
+
+.main{
+padding:10px;
+}
+
+.menu-grid{
+grid-template-columns:1fr;
+}
+
+.topbar h1{
+font-size:20px;
+}
+
+.search-box input{
+font-size:13px;
+}
+
+.panel h2{
+font-size:18px;
+}
+
+.cart-item{
+font-size:13px;
+}
+
+.pay-btn{
+font-size:14px;
+padding:11px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="success-toast" id="toast"></div>
+
+<div class="app">
+
+<aside class="sidebar">
+  <h2>☕ Luzville POS</h2>
+  <nav>
+    <a class="active" href="dashboard.html">🏠 Dashboard</a>
+    <a href="order.html">📦 Orders</a>
+    <a href="sales.html">💰 Sales</a>
+  </nav>
+  <a href="login.html" class="logout-btn" onclick="logout()">🚪 Logout</a>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+  <h1>Cashier Dashboard</h1>
+  <span id="cashierName" style="color:rgba(255,255,255,0.5);font-size:14px;"></span>
+</header>
+
+<section class="pos-grid">
+
+<div class="panel">
+  <h2>🍽 Menu</h2>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search menu..." onkeyup="renderMenu()">
+  </div>
+  <div id="menuList"></div>
+</div>
+
+<div class="panel">
+  <h2>🧾 Cart</h2>
+  <div id="cart"></div>
+  <div class="total-box">
+    Total: ₱<span id="total">0.00</span>
+  </div>
+  <button class="pay-btn" id="payBtn" onclick="checkout()">
+    💳 PROCESS PAYMENT
+  </button>
+  <button class="clear-btn" onclick="clearCart()">🗑 Clear Cart</button>
+</div>
+
+</section>
+</main>
+</div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script>
+
+const API = "http://localhost:3000";
+let menuData = [];
+let cart = [];
+let user = JSON.parse(localStorage.getItem("user")) || null;
+
+// ================= REDIRECT IF NOT LOGGED IN =================
+if (!user) {
+  window.location.href = "login.html";
+}
+
+// Show cashier name
+if (user?.name) {
+  document.getElementById("cashierName").textContent = "👤 " + user.name;
+}
+
+// ================= SOCKET =================
+const socket = io(API, {
+  transports: ["websocket", "polling"],
+  reconnection: true
+});
+
+socket.on("connect", () => {
+  console.log("Socket connected:", socket.id);
+  if (user?.id) socket.emit("user-online", user.id);
+});
+
+socket.on("connect_error", (err) => {
+  console.log("Socket error:", err.message);
+});
+
+// ================= LOGOUT =================
+function logout() {
+  if (user?.id && socket?.connected) {
+    socket.emit("user-offline", user.id);
+  }
+  localStorage.removeItem("user");
+  window.location.href = "login.html";
+}
+
+// ================= TOAST =================
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => { t.style.display = "none"; }, 3000);
+}
+
+// ================= LOAD MENU =================
+async function loadMenu() {
+  try {
+    const res = await fetch(`${API}/menu`);
+    if (!res.ok) throw new Error("Failed");
+    menuData = await res.json();
+    renderMenu();
+  } catch (err) {
+    console.error("Failed to load menu:", err);
+    document.getElementById("menuList").innerHTML =
+      "<div class='no-menu'>⚠️ Failed to load menu. Is the server running?</div>";
+  }
+}
+
+// ================= RENDER MENU =================
+function renderMenu() {
+  const search = document.getElementById("searchInput").value.toLowerCase();
+
+  const filtered = menuData.filter(item =>
+    (item.name || "").toLowerCase().includes(search) ||
+    (item.category || "").toLowerCase().includes(search)
+  );
+
+  let grouped = {};
+  filtered.forEach(item => {
+    let cat = item.category || "Others";
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(item);
+  });
+
+  let html = "";
+  for (let cat in grouped) {
+    html += `<div><h3 style="margin:12px 0 8px;font-size:13px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;">${cat}</h3><div class="menu-grid">`;
+    grouped[cat].forEach(item => {
+      html += `
+        <div class="menu-card">
+          <h3>${item.name}</h3>
+          <p>₱${Number(item.price).toFixed(2)}</p>
+          <div class="qty">
+            <button onclick="changeQty(${item.id}, -1)">-</button>
+            <span id="qty-${item.id}">0</span>
+            <button onclick="changeQty(${item.id}, 1)">+</button>
+          </div>
+          <button onclick="addToCart(${item.id})">Add</button>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+  }
+
+  document.getElementById("menuList").innerHTML =
+    filtered.length ? html : "<div class='no-menu'>No items found</div>";
+}
+
+// ================= QTY =================
+function changeQty(id, val) {
+  let el = document.getElementById("qty-" + id);
+  let qty = parseInt(el.innerText || 0);
+  qty = Math.max(0, qty + val);
+  el.innerText = qty;
+}
+
+// ================= ADD TO CART =================
+function addToCart(id) {
+  let item = menuData.find(i => i.id === id);
+  let qty = parseInt(document.getElementById("qty-" + id).innerText);
+
+  if (!qty) return alert("Select quantity first!");
+
+  let exist = cart.find(c => c.id === id);
+  if (exist) exist.qty += qty;
+  else cart.push({ ...item, qty });
+
+  document.getElementById("qty-" + id).innerText = 0;
+  renderCart();
+}
+
+// ================= REMOVE FROM CART =================
+function removeFromCart(id) {
+  cart = cart.filter(c => c.id !== id);
+  renderCart();
+}
+
+// ================= CLEAR CART =================
+function clearCart() {
+  if (!cart.length) return;
+  if (confirm("Clear all items from cart?")) {
+    cart = [];
+    renderCart();
+  }
+}
+
+// ================= RENDER CART =================
+function renderCart() {
+  if (!cart.length) {
+    document.getElementById("cart").innerHTML =
+      "<div class='empty-cart'>🛒 Cart is empty</div>";
+    document.getElementById("total").innerText = "0.00";
+    return;
+  }
+
+  let total = 0;
+
+  document.getElementById("cart").innerHTML = cart.map(i => {
+    const subtotal = i.qty * i.price;
+    total += subtotal;
+    return `
+      <div class="cart-item">
+        <span>${i.name} × ${i.qty}</span>
+        <span>₱${subtotal.toFixed(2)}</span>
+        <button class="remove-btn" onclick="removeFromCart(${i.id})">✕</button>
+      </div>`;
+  }).join("");
+
+  document.getElementById("total").innerText = total.toFixed(2);
+}
+
+// ================= CHECKOUT =================
+async function checkout() {
+  if (!cart.length) return alert("Cart is empty!");
+
+  const total = cart.reduce((sum, i) => sum + i.qty * i.price, 0);
+  const payBtn = document.getElementById("payBtn");
+
+  payBtn.disabled = true;
+  payBtn.textContent = "Processing...";
+
+  try {
+    const res = await fetch(`${API}/orders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: user?.id || 1,
+        items: cart,
+        total: total,
+        payment_status: "pending"   // ✅ starts as pending — cashier marks paid in Orders
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Payment failed!");
+      return;
+    }
+
+    showToast("✅ Order #" + data.orderId + " placed! Mark as paid in Orders.");
+    cart = [];
+    renderCart();
+
+  } catch (err) {
+    console.error("Checkout error:", err);
+    alert("❌ Could not connect to server. Is it running?");
+  } finally {
+    payBtn.disabled = false;
+    payBtn.textContent = "💳 PROCESS PAYMENT";
+  }
+}
+
+// ================= INIT =================
+loadMenu();
+renderCart();
+
+</script>
+</body>
+</html>
