@@ -1,0 +1,67 @@
+INSERT INTO menu (category, name, price) VALUES
+
+
+('Rice / Donburi', 'Gyudon (Beef)', 250),
+('Rice / Donburi', 'Saborro Don (Pork)', 150),
+('Rice / Donburi', 'Tendon (Prawn/Shrimp)', 150),
+('Rice / Donburi', 'Katsu Curry (Chicken)', 210),
+('Rice / Donburi', 'Katsudon (Pork)', 150),
+('Rice / Donburi', 'Oyako Don (Chicken)', 150),
+('Rice / Donburi', 'Kaisen Don (Seafood)', 250),
+
+
+('Sushi', 'California Sushi', 120),
+('Sushi', 'Avocado with Salmon', 150),
+('Sushi', 'Kani Sushi', 100),
+('Sushi', 'Urumaki', 100),
+('Sushi', 'Mosaic Roll', 150),
+('Sushi', 'Teemaki', 300),
+('Sushi', 'Salmon Sushi', 120),
+('Sushi', 'Nigiri Sushi', 200),
+('Sushi', 'Tuna Sushi', 150),
+('Sushi', 'Tempura Sushi', 150),
+
+
+('Main Course', 'Chicken Biryani', 180),
+('Main Course', 'Beef Biryani', 220),
+('Main Course', 'Pork Biryani', 220),
+('Main Course', 'Mutton Biryani', 250),
+('Main Course', 'Shrimp Biryani', 220),
+('Main Course', 'Chicken Tandoori', 200),
+('Main Course', 'Sheekh Kebab', 180),
+('Main Course', 'Chicken Herbs', 120),
+('Main Course', 'Ribeye Steak', 650),
+('Main Course', 'Shawarma Rice', 150),
+('Main Course', 'Chicken Curry', 150),
+('Main Course', 'Beef Curry', 200),
+('Main Course', 'Mutton Curry', 220),
+
+
+('To Share', 'Chili Garlic Crab', 450),
+('To Share', 'Steamed Crab', 400),
+('To Share', 'Seafood Boil', 500),
+('To Share', 'Breaded Shrimp', 300),
+('To Share', 'Tempura Shrimp', 350),
+('To Share', 'Chili Garlic Shrimp', 300),
+('To Share', 'Boneless Bangus', 220),
+('To Share', 'Sinigang na Isda', 200),
+('To Share', 'Native Chicken', 350),
+('To Share', 'Bangus Tinola/Sinigang', 200),
+
+
+('Sandwich', 'Chicken Sub Sandwich', 110),
+('Sandwich', 'Vegetable Sub Sandwich', 100),
+('Sandwich', 'Ham & Egg Sandwich', 90),
+('Sandwich', 'Cheese Burger Meal', 90),
+('Sandwich', 'Double Cheese Burger Meal', 120),
+('Sandwich', 'Triple Cheese Burger Meal', 150),
+('Sandwich', 'Capt. Pedro', 180),
+('Sandwich', 'Bolognes / Garlic Cheese Bread', 160),
+('Salad', 'Mango Kani Salad', 120),
+('Salad', 'Fresh Mix Salad', 120),
+
+
+('Sashimi', 'Salmon Sashimi', 250),
+('Sashimi', 'Tuna Sashimi', 250),
+('Sashimi', 'Octopus Sashimi', 300),
+('Sashimi', 'Mixed Sashimi', 300);

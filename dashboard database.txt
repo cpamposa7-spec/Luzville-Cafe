@@ -1,0 +1,29 @@
+CREATE DATABASE IF NOT EXISTS luzville;
+USE luzville;
+
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  username VARCHAR(100),
+  password VARCHAR(255),
+  role VARCHAR(20) DEFAULT 'user'
+);
+
+
+CREATE TABLE menu (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  price DECIMAL(10,2)
+);
+
+
+CREATE TABLE orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  item_name VARCHAR(100),
+  qty INT,
+  total DECIMAL(10,2),
+  status VARCHAR(20) DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

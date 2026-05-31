@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luzville Café — Staff Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #1a0f08;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-wrap {
+  display: flex;
+  width: 900px;
+  height: 560px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+}
+
+.left-panel {
+  width: 300px;
+  background: linear-gradient(160deg,#2c1a0e,#7a4a1f,#c68b3c);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+  .brand-name {
+  text-decoration: none;
+  color: white;
+}
+.brand-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.brand-sub {
+  font-size: 11px;
+  color: #f0d2a0;
+}
+
+.role-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.role-btn {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 14px;
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.role-btn.active {
+  background: rgba(255,255,255,0.25);
+}
+
+.right-panel {
+  flex: 1;
+  background: #fdf8f3;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  background: #c48336;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover { background: #a86e28; }
+
+.error {
+  color: red;
+  margin-top: 10px;
+  display: none;
+}
+
+  /* ================= RESPONSIVE LOGIN FIX ================= */
+
+html, body {
+width: 100%;
+height: 100%;
+overflow-x: hidden;
+}
+
+/* MAIN WRAPPER */
+.login-wrap {
+width: 900px;
+max-width: 95%;
+height: 560px;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 768px) {
+
+body {
+align-items: flex-start;
+padding: 20px;
+}
+
+.login-wrap {
+flex-direction: column;
+width: 100%;
+height: auto;
+max-width: 500px;
+}
+
+.left-panel {
+width: 100%;
+padding: 20px;
+text-align: center;
+}
+
+.role-selector {
+flex-direction: row;
+justify-content: center;
+gap: 10px;
+flex-wrap: wrap;
+}
+
+.role-btn {
+flex: 1;
+min-width: 140px;
+}
+
+.right-panel {
+padding: 30px 20px;
+}
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 480px) {
+
+.login-wrap {
+border-radius: 14px;
+}
+
+.right-panel {
+padding: 20px 16px;
+}
+
+input {
+font-size: 14px;
+}
+
+button {
+font-size: 14px;
+}
+
+.brand-name {
+font-size: 16px;
+}
+
+.brand-sub {
+font-size: 10px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-wrap">
+
+  <div class="left-panel">
+
+    <div>
+      <a href="index.html" class="brand-name">☕ Luzville Café</a>
+      <div class="brand-sub">Staff Portal</div>
+    </div>
+
+    <div class="role-selector">
+      <div class="role-btn active" id="cashierBtn" onclick="setRole('cashier')">
+        🧾 Cashier Login
+      </div>
+
+      <div class="role-btn" id="adminBtn" onclick="setRole('admin')">
+        🛡️ Admin Login
+      </div>
+    </div>
+
+    <div style="color:#f0d2a0;font-size:11px;">© 2025 Luzville Café</div>
+  </div>
+
+  <div class="right-panel">
+
+    <h2 id="title">Cashier Login</h2>
+
+    <form onsubmit="login(event)">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+
+      <button type="submit" id="btn">Login as Cashier</button>
+      <div class="error" id="error"></div>
+    </form>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script>
+
+const API = "http://localhost:3000";
+let role = "cashier";
+let socket = null;
+let currentUser = null;
+
+function setRole(r) {
+  role = r;
+
+  document.getElementById("cashierBtn").classList.toggle("active", r === "cashier");
+  document.getElementById("adminBtn").classList.toggle("active", r === "admin");
+
+  document.getElementById("title").innerText =
+    r === "admin" ? "Admin Login" : "Cashier Login";
+
+  document.getElementById("btn").innerText =
+    r === "admin" ? "Login as Admin" : "Login as Cashier";
+
+  hideError();
+}
+
+async function login(e) {
+  e.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const res = await fetch(`${API}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, role })
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      return showError(data.error || "Login failed");
+    }
+
+    const user = data.user;
+
+    if (role !== user.role) {
+      return showError("Access denied");
+    }
+
+    currentUser = user;
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    // ================= SOCKET FIX =================
+   socket = io(API, {
+  reconnection: true,
+  timeout: 10000
+});
+
+    socket.on("connect", () => {
+  console.log("CONNECTED:", socket.id);
+
+  socket.emit("user-online", user.id);
+
+  // wait for emit to finish properly before redirect
+  setTimeout(() => {
+    window.location.href =
+      user.role === "admin" ? "admin.html" : "dashboard.html";
+  }, 800);
+});
+
+    socket.on("connect_error", (err) => {
+      console.log("Socket error:", err.message);
+      showError("Server not reachable. Check Node server.");
+    });
+
+  } catch (err) {
+    showError("Cannot connect to API server");
+  }
+}
+
+function showError(msg) {
+  const e = document.getElementById("error");
+  e.style.display = "block";
+  e.innerText = msg;
+}
+
+function hideError() {
+  document.getElementById("error").style.display = "none";
+}
+
+window.addEventListener("beforeunload", () => {
+  if (socket && currentUser?.id) {
+    socket.emit("user-offline", currentUser.id);
+  }
+});
+
+</script>
+
+</body>
+</html>
